@@ -7,16 +7,21 @@
 
 import Foundation
 
+struct LastLocation: Codable {
+  let time: Int
+  let display: String
+  let latitude: Double
+  let longitude: Double
+}
+
 struct FoodTruck: Codable {
-    var name: String
-    var longitude: String
-    var latitude: String
-    var phoneNumber: String
-    var website: String
-    var truckDescription: String
-    var foodTruckID: String
-    var email: String
-    var operating: Bool
+  let name: String
+  let last: LastLocation?
+  let phone: String?
+  let url: String?
+  let description: String?
+  let identifier: String
+  let email: String?
 }
 
 import UIKit

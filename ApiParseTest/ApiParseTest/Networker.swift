@@ -8,8 +8,7 @@
 import Foundation
 
 struct ApiFoodTruck: Codable {
-    var metadata: String
-    var vendor: [FoodTruck]
+  let vendors: [String: FoodTruck]
 }
 
 enum NetworkerError: Error {
@@ -30,12 +29,12 @@ class Networker {
         session = URLSession(configuration: config)
     }
     
-    func getFoodTruck(completion: @escaping ([FoodTruck]?, Error?) -> Void) {
+    func getFoodTruck(completion: @escaping ([String: FoodTruck]?, Error?) -> Void) {
         
         
         let searchURL = "http://data.streetfoodapp.com/1.1/schedule/vancouver/"
         guard let url = URL(string: searchURL) else {
-            print("error guard")
+            print("url is not URL")
             return
         }
         var request = URLRequest(url: url)
@@ -43,7 +42,6 @@ class Networker {
         let task = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
             if let error = error {
                 DispatchQueue.main.async {
-                    print("1 error")
                     completion(nil, error)
                 }
                 return
@@ -51,7 +49,6 @@ class Networker {
             
             guard let httpResponse = response as? HTTPURLResponse else {
                 DispatchQueue.main.async {
-                    print("2 error")
                     completion(nil, NetworkerError.badResponse)
                 }
                 return
@@ -59,7 +56,6 @@ class Networker {
             
             guard (200...299).contains(httpResponse.statusCode) else {
                 DispatchQueue.main.async {
-                    print("3 error")
                     completion(nil, NetworkerError.badStatusCode(httpResponse.statusCode))
                 }
                 return
@@ -67,7 +63,6 @@ class Networker {
             
             guard let data = data else {
                 DispatchQueue.main.async {
-                    print("4 error")
                     completion(nil, NetworkerError.badData)
                 }
                 return
@@ -75,16 +70,14 @@ class Networker {
             
             do {
                 let result = try JSONDecoder().decode(ApiFoodTruck.self, from: data)
-                print("in do")
                 DispatchQueue.main.async {
-                    print("5 error")
-                    completion(result.vendor, nil)
+                    print("success")
+                    completion(result.vendors, nil)
                 }
                 
                 
             } catch let error {
                 DispatchQueue.main.async {
-                   // print(error)
                     completion(nil, error)
                 }
             }

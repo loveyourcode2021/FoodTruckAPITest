@@ -8,29 +8,57 @@
 import UIKit
 
 class ViewController: UIViewController {
-    var foodtrucks: [FoodTruck] = []
+    var vendors: [String: FoodTruck] = [:]
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
         let networker = Networker.shared
         
-        networker.getFoodTruck{ (foodtruck, error) -> (Void) in
+        networker.getFoodTruck{ (vendors, error) -> (Void) in
             if let _ = error {
-                print(error)
-              print("error let")
+              print("error")
               return
             }
             
-            guard let foodtrucks = foodtruck else {
-                print("Error guard")
+            guard let vendors = vendors else {
+                print("error foodtrucks are not foodtruck")
                 return
             }
-            self.foodtrucks = foodtrucks
+            self.vendors = vendors
             
             // reload the collection view
             DispatchQueue.main.async {
-                print(self.foodtrucks)
+                for (_, foodtruck) in vendors {
+                    //print("\(foodtruckname) -> \(foodtruck)")
+                    print(foodtruck.name)
+                    
+                    let long = foodtruck.last?.longitude ?? 0
+                    let lat = foodtruck.last?.latitude ?? 0
+                    
+                    if let phone = foodtruck.phone {
+                        print(phone)
+                    }
+
+
+                    if let description = foodtruck.description {
+                        print(description)
+                    }
+
+                    if let url = foodtruck.url {
+                        print(url)
+                    }
+
+                    if let email = foodtruck.email {
+                        print(email)
+                    }
+
+                   // let identifier = foodtruck.identifier
+
+                    print("\("long "), \(long)")
+                    print("\("lat "), \(lat)")
+                    print("\n\n\n")
+                }
                 //self.collectionView.reloadData()
             }
             
