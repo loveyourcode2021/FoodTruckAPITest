@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  StreetFoodApp
 //
-//  Created by David Kao on 2021-02-26.
+//  Created by DongYeol Lee on 2021-02-26.
 //
 
 import UIKit

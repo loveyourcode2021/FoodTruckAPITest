@@ -16,7 +16,6 @@ class PinnedViewController: UIViewController {
     @IBOutlet weak var websiteLabel: UILabel!
     @IBOutlet weak var contactLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
-   
     @IBOutlet weak var descLabel: UILabel!
     
     var items:[FoodTruck]?
@@ -40,13 +39,13 @@ class PinnedViewController: UIViewController {
         
         let itemSize = NSCollectionLayoutSize (
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalHeight(1.2)
+            heightDimension: .fractionalHeight(1.4)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize (
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(50)
+            heightDimension: .absolute(100)
         )
         
         
@@ -94,6 +93,8 @@ extension PinnedViewController: UICollectionViewDelegate, UICollectionViewDataSo
  
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "pincell", for: indexPath) as! PinCollectionCollectionViewCell
+        let timestamp = DateFormatter.localizedString(from: NSDate() as Date, dateStyle: .medium, timeStyle: .short)
+        cell.dateLabel.text =  timestamp
         let user = users[indexPath.row]
         cell.comment.text = user.comment
         return cell
